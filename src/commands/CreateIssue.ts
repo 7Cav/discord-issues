@@ -9,20 +9,14 @@ logger.level = "debug";
 
 export class CreateIssue extends UsesOctokit implements Command {
 
-    public async execute(message: Message, args: String[]) {
-        await message.react('👀');
-
+    public async execute(message: Message, args: String[]): Promise<void> {
         // 1. extract issue body
-        let content: string = args.shift()!.toString();
-
-        await message.react('⚙️');
+        let content: string = args.join(" ");
 
         // 2. call axios/GH api
-        this.octokit.projects.createCard({
+        await this.octokit.projects.createCard({
             column_id: 9282033,
             note: content
         });
-
-        await message.react('✅');
     }
 }
