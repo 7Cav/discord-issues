@@ -117,9 +117,10 @@ dist
 .pnp.*
 
 # IntelliJ files
-
 .idea/
 
 # build files
-
 build/
+
+# config
+.env
