@@ -1,14 +1,13 @@
 import * as log4js from "log4js";
 import {Client} from "discord.js";
-import * as dotenv from "dotenv";
 import {Command} from "./types/Command";
 import {CreateIssue} from "./commands/CreateIssue";
+import "./lib/env"
+import {Optional} from "typescript-optional";
 
 // init logger
 let logger = log4js.getLogger("bootstrap");
 logger.level = "debug";
-
-dotenv.config()
 
 logger.info("Starting App");
 
@@ -26,7 +25,8 @@ logger.info("Commands loaded");
 let client: Client = new Client();
 
 //Bot login
-client.login().then(() => {
+let discord_token: Optional<string | undefined> = Optional.ofNonNull(process.env.DISCORD_BOT_TOKEN);
+client.login(discord_token.get()).then(() => {
     logger.info(`logged in as ${client.user?.tag}!`)
 });
 
