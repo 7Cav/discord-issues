@@ -51,10 +51,20 @@ client.on("message", message => {
     let args: String[] = message.content.slice(PREFIX.length).split(/ +/);
     let command: String = args.shift()!.toLowerCase();
 
+
     if (commandMap.has(command)) {
+        message.react('👀')
+
+        message.react('⚙️');
+
         logger.debug(`processing action for: ${command}`);
-        commandMap.get(command)!.execute(message, args);
+
+        commandMap.get(command)!.execute(message, args)
+            .then(() =>  message.react('✅'))
+            .catch(() => message.react('❌'));
     }
+
+
 });
 
 logger.info("Events setup");
