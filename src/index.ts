@@ -4,6 +4,7 @@ import {Command} from "./types/Command";
 import {CreateIssue} from "./commands/CreateIssue";
 import "./lib/env"
 import {Optional} from "typescript-optional";
+import {GetProject} from "./commands/GetProject";
 
 // init logger
 let logger = log4js.getLogger("bootstrap");
@@ -17,6 +18,7 @@ let PREFIX = "!";
 // Add command objects to map for later lookup
 let commandMap = new Map<String, Command>();
 commandMap.set("issue", new CreateIssue());
+commandMap.set("project", new GetProject());
 
 
 logger.info("Commands loaded");
