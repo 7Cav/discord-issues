@@ -1,21 +1,23 @@
-import moment from "moment";
+import {google, GoogleApis} from 'googleapis';
+import {GoogleAuth} from "google-auth-library/build/src/auth/googleauth";
+import {Optional} from "typescript-optional";
+import fs from "fs";
 
-const CONFIG = require('./config/Settings');
-let cal = new CalendarAPI(CONFIG);
+export abstract class UsesGoogle {
 
-export class GoogleCalendar {
-    constructor(startDate:string, endDate: string, startTime: string, endTime: string, location: string, Summary: string, Status: string, Desc: string) {
-        let startT  = moment(`${startDate} ${startTime}`, 'YYYY-MM-DD hh:mm').tz("Europe/London").utc().subtract(5, 'hours').format();
-        let endT = moment(`${endDate} ${endTime}`, 'YYYY-MM-DD hh:mm').tz("Europe/London").utc().subtract(5, 'hours').format();
+    readonly google: GoogleApis = google;
 
-        let params = {
-            'start': { 'dateTime': `${startT}` },
-            'end': { 'dateTime': `${endT}` },
-            'location': `${location}`,
-            'summary': `${Summary}`,
-            'status': `${Status}`,
-            'description': `${Desc}`,
-            'colorId': 1
-        };
+    private readonly auth: GoogleAuth;
+    private authKeyFilePath: Optional<string | undefined> = Optional.ofNonNull(process.env.GOOGLE_PEM_FILE_PATH)!;
+
+    protected constructor() {
+        this.auth = new google.auth.GoogleAuth({
+            keyFile: fs.readFileSync(this.authKeyFilePath.get()!, "utf8"),
+            scopes: ['https://www.googleapis.com/auth/calendar'],
+        });
+
+        this.google.options({
+            auth: this.auth
+        });
     }
 }
