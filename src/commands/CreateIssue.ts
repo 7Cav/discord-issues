@@ -9,7 +9,7 @@ let logger = log4js.getLogger("CreateIssue");
 logger.level = "debug";
 
 export class CreateIssue extends UsesOctokit implements Command {
-    public async execute(message: Message, args: String[]): Promise<void> {
+    public async execute(message: Message, args: string[]): Promise<void> {
         // 1. extract issue body
         let content: string = args.join(" ");
         let projectColumnId: Optional<number> = Optional.ofNonNull(

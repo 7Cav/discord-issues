@@ -53,8 +53,8 @@ client.on("message", (message) => {
         return;
     }
 
-    let args: String[] = message.content.slice(PREFIX.length).split(/ +/);
-    let command: String = args.shift()!.toLowerCase();
+    let args: string[] = message.content.slice(PREFIX.length).split(/ +/);
+    let command: string = args.shift()!.toLowerCase();
 
     if (commandMap.has(command)) {
         message.react("👀");
