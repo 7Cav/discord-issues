@@ -1,10 +1,20 @@
 import { Command } from "../types/Command";
 import { Message } from "discord.js";
-import { GoogleCalendar } from "../types/GoogleCalendar";
+import {UsesGoogleCalendar} from "../types/UsesGoogleCalendar";
+import {Optional} from "typescript-optional";
+import moment from "moment";
+import * as log4js from "log4js";
 
-export class CreateEvent extends GoogleCalendar implements Command {
+// init logger
+let logger = log4js.getLogger("CreateEvent");
+logger.level = "debug";
+
+export class CreateEvent extends UsesGoogleCalendar implements Command {
 
     public async execute(msg: Message, args: String[]): Promise<void> {
+
+        let s6CalendarId: Optional<string | undefined> = Optional.ofNonNull(process.env.GOOGLE_S6_CALENDAR_ID)!;
+
         // Take arguments
         let auth: any = msg.author.id;
         let content: string = args.join(" ");
@@ -16,12 +26,26 @@ export class CreateEvent extends GoogleCalendar implements Command {
             // TODO: Continue until all questions are answered;
         }
 
-        function waitMessage(msg: Message): void {
+        // function waitMessage(msg: Message): void {
+        //
+        // }
 
-        }
-
-        await msg.channel.awaitMessages();
+        // await msg.channel.awaitMessages();
          // respond after each argument is given until the command is complete.
+
+        // insert an event to the S6 calendar that starts one hour from now and ends 2 hours from now
+        await this.calendar.events.insert({
+            calendarId: s6CalendarId.get(),
+            requestBody: {
+                summary: content,
+                start: {
+                    dateTime: moment().add(1, "hour").format()
+                },
+                end: {
+                    dateTime: moment().add(2, "hour").format()
+                }
+            }
+        })
     }
 
 }
