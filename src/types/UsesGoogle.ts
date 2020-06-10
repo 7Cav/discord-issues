@@ -1,7 +1,7 @@
+import moment from "moment";
+
 const CONFIG = require('./config/Settings');
-const CalendarAPI = require('node-google-calendar');
-let cal = new CalendarAPI(CONFIG); 
-const moment = require('moment-timezone');
+let cal = new CalendarAPI(CONFIG);
 
 export class GoogleCalendar {
     constructor(startDate:string, endDate: string, startTime: string, endTime: string, location: string, Summary: string, Status: string, Desc: string) {
