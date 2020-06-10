@@ -28,7 +28,9 @@ logger.info("Commands loaded");
 let client: Client = new Client();
 
 //Bot login
-let discord_token: Optional<string | undefined> = Optional.ofNonNull(process.env.DISCORD_BOT_TOKEN);
+let discord_token: Optional<string | undefined> = Optional.ofNonNull(
+    process.env.DISCORD_BOT_TOKEN
+);
 client.login(discord_token.get()).then(() => {
     logger.info(`logged in as ${client.user?.tag}!`);
 });
