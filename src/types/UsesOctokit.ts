@@ -10,30 +10,30 @@ export abstract class UsesOctokit {
     )!;
 
     constructor() {
-        let app_id: Optional<string | undefined> = Optional.ofNonNull(
+        const APP_ID: Optional<string | undefined> = Optional.ofNonNull(
             process.env.GITHUB_APP_ID
         );
-        let installation_id: Optional<string | undefined> = Optional.ofNonNull(
+        const INSTALLATION_ID: Optional<string | undefined> = Optional.ofNonNull(
             process.env.GITHUB_INSTALLATION_ID
         );
-        let client_id: Optional<string | undefined> = Optional.ofNonNull(
+        const CLIENT_ID: Optional<string | undefined> = Optional.ofNonNull(
             process.env.GITHUB_CLIENT_ID
         );
-        let client_secret: Optional<string | undefined> = Optional.ofNonNull(
+        const CLIENT_SECRET: Optional<string | undefined> = Optional.ofNonNull(
             process.env.GITHUB_CLIENT_SECRET
         );
 
         this.octokit = new Octokit({
             authStrategy: createAppAuth,
             auth: {
-                id: app_id.get(),
-                installationId: installation_id.get(),
+                id: APP_ID.get(),
+                installationId: INSTALLATION_ID.get(),
                 privateKey: fs.readFileSync(
                     this.authKeyFilePath.get()!,
                     "utf8"
                 ),
-                clientId: client_id.get(),
-                clientSecret: client_secret.get(),
+                clientId: CLIENT_ID.get(),
+                clientSecret: CLIENT_SECRET.get(),
             },
             previews: ["inertia-preview", "machine-man-preview"],
         });

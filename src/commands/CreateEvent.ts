@@ -11,7 +11,7 @@ logger.level = "debug";
 
 export class CreateEvent extends UsesGoogleCalendar implements Command {
     public async execute(msg: Message, args: string[]): Promise<void> {
-        let s6CalendarId: Optional<string | undefined> = Optional.ofNonNull(
+        const s6CalendarId: Optional<string | undefined> = Optional.ofNonNull(
             process.env.GOOGLE_S6_CALENDAR_ID
         )!;
 
