@@ -3,9 +3,9 @@ import {createAppAuth} from "@octokit/auth-app";
 import fs from "fs";
 import {Optional} from "typescript-optional";
 
-export class UsesOctokit {
-    octokit: Octokit;
-    filePath: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_PEM_FILE_PATH)!;
+export abstract class UsesOctokit {
+    readonly octokit: Octokit;
+    private authKeyFilePath: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_PEM_FILE_PATH)!;
 
     constructor() {
         let app_id: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_APP_ID);
@@ -18,7 +18,7 @@ export class UsesOctokit {
             auth: {
                 id: app_id.get(),
                 installationId: installation_id.get(),
-                privateKey: fs.readFileSync(this.filePath.get()!, "utf8"),
+                privateKey: fs.readFileSync(this.authKeyFilePath.get()!, "utf8"),
                 clientId: client_id.get(),
                 clientSecret: client_secret.get()
             },
