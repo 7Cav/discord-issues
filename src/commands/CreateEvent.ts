@@ -24,11 +24,10 @@ export class CreateEvent extends UsesGoogleCalendar implements Command {
 
         let parsedChronoResults: any[] = chrono.parse(content);
 
-        if (parsedChronoResults.length == 0) {
+        if (!(parsedChronoResults.length > 0)) {
             throw new Error("Unable to parse any dates from the event");
         }
 
-        // logger.debug("using google auth: " + JSON.stringify(this.google.auth));
         logger.debug("parsed time data: " + JSON.stringify(parsedChronoResults));
 
         const eventContent: string = content.replace(parsedChronoResults[0].text, "");
