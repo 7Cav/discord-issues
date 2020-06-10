@@ -5,9 +5,9 @@ import {Optional} from "typescript-optional";
 
 export class UsesOctokit {
     octokit: Octokit;
+    filePath: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_PEM_FILE_PATH)!;
 
     constructor() {
-        let filePath: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_PEM_FILE_PATH)!;
         let app_id: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_APP_ID);
         let installation_id: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_INSTALLATION_ID);
         let client_id: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_CLIENT_ID);
@@ -18,7 +18,7 @@ export class UsesOctokit {
             auth: {
                 id: app_id.get(),
                 installationId: installation_id.get(),
-                privateKey: fs.readFileSync(filePath.get()!, "utf8"),
+                privateKey: fs.readFileSync(this.filePath.get()!, "utf8"),
                 clientId: client_id.get(),
                 clientSecret: client_secret.get()
             },
