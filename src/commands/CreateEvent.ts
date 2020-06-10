@@ -15,6 +15,7 @@ export class CreateEvent extends UsesGoogleCalendar implements Command {
 
         let s6CalendarId: Optional<string | undefined> = Optional.ofNonNull(process.env.GOOGLE_S6_CALENDAR_ID)!;
 
+        logger.debug("using calendar ID: " + s6CalendarId.get());
         // Take arguments
         let auth: any = msg.author.id;
         let content: string = args.join(" ");
@@ -32,6 +33,8 @@ export class CreateEvent extends UsesGoogleCalendar implements Command {
 
         // await msg.channel.awaitMessages();
          // respond after each argument is given until the command is complete.
+
+        logger.debug("using google auth: " + JSON.stringify(this.google.auth));
 
         // insert an event to the S6 calendar that starts one hour from now and ends 2 hours from now
         await this.calendar.events.insert({
