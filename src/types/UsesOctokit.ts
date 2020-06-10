@@ -1,28 +1,36 @@
-import {Octokit} from "@octokit/rest";
-import {createAppAuth} from "@octokit/auth-app";
+import { Octokit } from "@octokit/rest";
+import { createAppAuth } from "@octokit/auth-app";
 import fs from "fs";
-import {Optional} from "typescript-optional";
+import { Optional } from "typescript-optional";
 
-export class UsesOctokit {
-    octokit: Octokit;
+export abstract class UsesOctokit {
+    readonly octokit: Octokit;
+    private authKeyFilePath: Optional<string | undefined> = Optional.ofNonNull(
+        process.env.GITHUB_PEM_FILE_PATH
+    )!;
 
     constructor() {
-        let filePath: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_PEM_FILE_PATH)!;
-        let app_id: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_APP_ID);
-        let installation_id: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_INSTALLATION_ID);
-        let client_id: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_CLIENT_ID);
-        let client_secret: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_CLIENT_SECRET);
+        const APP_ID: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_APP_ID);
+        const INSTALLATION_ID: Optional<string | undefined> = Optional.ofNonNull(
+            process.env.GITHUB_INSTALLATION_ID
+        );
+        const CLIENT_ID: Optional<string | undefined> = Optional.ofNonNull(
+            process.env.GITHUB_CLIENT_ID
+        );
+        const CLIENT_SECRET: Optional<string | undefined> = Optional.ofNonNull(
+            process.env.GITHUB_CLIENT_SECRET
+        );
 
         this.octokit = new Octokit({
             authStrategy: createAppAuth,
             auth: {
-                id: app_id.get(),
-                installationId: installation_id.get(),
-                privateKey: fs.readFileSync(filePath.get()!, "utf8"),
-                clientId: client_id.get(),
-                clientSecret: client_secret.get()
+                id: APP_ID.get(),
+                installationId: INSTALLATION_ID.get(),
+                privateKey: fs.readFileSync(this.authKeyFilePath.get()!, "utf8"),
+                clientId: CLIENT_ID.get(),
+                clientSecret: CLIENT_SECRET.get(),
             },
-            previews: ["inertia-preview", "machine-man-preview"]
+            previews: ["inertia-preview", "machine-man-preview"],
         });
     }
 }
