@@ -17,7 +17,8 @@
   },
   "prettier": {
     "tabWidth": 4,
-    "semi": true
+    "semi": true,
+    "printWidth": 100
   },
   "author": "",
   "license": "GPL-3.0-or-later",
@@ -39,6 +40,7 @@
   "dependencies": {
     "@octokit/auth-app": "^2.4.6",
     "@octokit/rest": "^17.10.0",
+    "chrono-node": "^1.4.6",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "google-auth-library": "^6.0.1",

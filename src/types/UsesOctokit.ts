@@ -10,9 +10,7 @@ export abstract class UsesOctokit {
     )!;
 
     constructor() {
-        const APP_ID: Optional<string | undefined> = Optional.ofNonNull(
-            process.env.GITHUB_APP_ID
-        );
+        const APP_ID: Optional<string | undefined> = Optional.ofNonNull(process.env.GITHUB_APP_ID);
         const INSTALLATION_ID: Optional<string | undefined> = Optional.ofNonNull(
             process.env.GITHUB_INSTALLATION_ID
         );
@@ -28,10 +26,7 @@ export abstract class UsesOctokit {
             auth: {
                 id: APP_ID.get(),
                 installationId: INSTALLATION_ID.get(),
-                privateKey: fs.readFileSync(
-                    this.authKeyFilePath.get()!,
-                    "utf8"
-                ),
+                privateKey: fs.readFileSync(this.authKeyFilePath.get()!, "utf8"),
                 clientId: CLIENT_ID.get(),
                 clientSecret: CLIENT_SECRET.get(),
             },
