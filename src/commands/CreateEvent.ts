@@ -4,9 +4,8 @@ import { UsesGoogleCalendar } from "../types/UsesGoogleCalendar";
 import { Optional } from "typescript-optional";
 import moment from "moment";
 import * as log4js from "log4js";
-import { format } from "url";
-
-const chrono = require("chrono-node");
+// @ts-ignore
+import chrono from "chrono-node";
 
 // init logger
 let logger = log4js.getLogger("CreateEvent");
@@ -32,9 +31,9 @@ export class CreateEvent extends UsesGoogleCalendar implements Command {
         // logger.debug("using google auth: " + JSON.stringify(this.google.auth));
         logger.debug("parsed time data: " + JSON.stringify(parsedChronoResults));
 
-        let eventContent: string = content.replace(parsedChronoResults[0].text, "");
+        const eventContent: string = content.replace(parsedChronoResults[0].text, "");
 
-        let startTime : string = moment(parsedChronoResults[0].start.date()).format()
+        const startTime : string = moment(parsedChronoResults[0].start.date()).format();
         logger.debug("parsed start time: " + startTime);
 
         let endTime: string =
