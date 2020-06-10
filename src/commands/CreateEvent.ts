@@ -4,6 +4,8 @@ import { UsesGoogleCalendar } from "../types/UsesGoogleCalendar";
 import { Optional } from "typescript-optional";
 import moment from "moment";
 import * as log4js from "log4js";
+// @ts-ignore
+import chrono from "chrono-node";
 
 // init logger
 let logger = log4js.getLogger("CreateEvent");
@@ -16,36 +18,40 @@ export class CreateEvent extends UsesGoogleCalendar implements Command {
         )!;
 
         logger.debug("using calendar ID: " + s6CalendarId.get());
+
         // Take arguments
-        let auth: any = msg.author.id;
         let content: string = args.join(" ");
-        let data: any = function (msg: Message): void {
-            // TODO: send first question and await response or timeout;
-            // TODO: Next data validate the response;
-            // TODO: Next send next question and await response or timeout;
-            // TODO: Data validate and response;
-            // TODO: Continue until all questions are answered;
-        };
 
-        // function waitMessage(msg: Message): void {
-        //
-        // }
+        let parsedChronoResults: any[] = chrono.parse(content);
 
-        // await msg.channel.awaitMessages();
-        // respond after each argument is given until the command is complete.
+        if (!(parsedChronoResults.length > 0)) {
+            throw new Error("Unable to parse any dates from the event");
+        }
 
-        logger.debug("using google auth: " + JSON.stringify(this.google.auth));
+        logger.debug("parsed time data: " + JSON.stringify(parsedChronoResults));
+
+        const eventContent: string = content.replace(parsedChronoResults[0].text, "");
+
+        const startTime : string = moment(parsedChronoResults[0].start.date()).format();
+        logger.debug("parsed start time: " + startTime);
+
+        let endTime: string =
+            parsedChronoResults[0].end == null
+                ? moment(startTime).add(1, "hour").format()
+                : moment(parsedChronoResults[0].end.date()).format();
+
+        logger.debug("parsed end time: " + endTime);
 
         // insert an event to the S6 calendar that starts one hour from now and ends 2 hours from now
         await this.calendar.events.insert({
             calendarId: s6CalendarId.get(),
             requestBody: {
-                summary: content,
+                summary: eventContent,
                 start: {
-                    dateTime: moment().add(1, "hour").format(),
+                    dateTime: startTime
                 },
                 end: {
-                    dateTime: moment().add(2, "hour").format(),
+                    dateTime: endTime,
                 },
             },
         });
