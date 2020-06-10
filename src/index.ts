@@ -5,10 +5,6 @@ import {CreateIssue} from "./commands/CreateIssue";
 import "./lib/env"
 import {Optional} from "typescript-optional";
 import {GetProject} from "./commands/GetProject";
-import { GoogleAPI } from "./types/GoogleCalendar";
-
-// Instantiate new Google API login.
-let google: GoogleAPI = new GoogleAPI();
 
 // init logger
 let logger = log4js.getLogger("bootstrap");
