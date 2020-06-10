@@ -5,6 +5,7 @@ import {CreateIssue} from "./commands/CreateIssue";
 import "./lib/env"
 import {Optional} from "typescript-optional";
 import {GetProject} from "./commands/GetProject";
+import {CreateEvent} from "./commands/CreateEvent";
 
 // init logger
 let logger = log4js.getLogger("bootstrap");
@@ -19,6 +20,7 @@ let PREFIX = "!";
 let commandMap = new Map<String, Command>();
 commandMap.set("issue", new CreateIssue());
 commandMap.set("project", new GetProject());
+commandMap.set("calendar", new CreateEvent());
 
 
 logger.info("Commands loaded");
