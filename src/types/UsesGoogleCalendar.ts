@@ -10,7 +10,7 @@ export abstract class UsesGoogleCalendar extends UsesGoogle {
         super();
 
         this.calendar = this.google.calendar({
-            auth: this.google.auth,
+            auth: this.auth,
             version: "v3"
         });
     }
