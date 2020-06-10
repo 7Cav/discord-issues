@@ -65,7 +65,10 @@ client.on("message", message => {
 
         commandMap.get(command)!.execute(message, args)
             .then(() =>  message.react('✅'))
-            .catch(() => message.react('❌'));
+            .catch((error) => {
+                message.react('❌')
+                logger.error("Exception ", error);
+            });
     }
 
 
